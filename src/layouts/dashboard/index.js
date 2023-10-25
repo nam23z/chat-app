@@ -67,7 +67,6 @@ const DashboardLayout = () => {
           backgroundColor: theme.palette.background.paper,
           boxShadow: "0 0 2px rgba(0,0,0,0.25)",
           height: "100vh",
-          width: 100
         }}
       >
         <Stack
