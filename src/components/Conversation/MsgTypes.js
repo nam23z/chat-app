@@ -3,12 +3,15 @@ import {
   Divider,
   IconButton,
   Link,
+  Menu,
+  MenuItem,
   Stack,
   Typography,
   useTheme,
 } from "@mui/material";
-import { DownloadSimple, Image } from "phosphor-react";
+import { DotsThreeVertical, DownloadSimple, Image } from "phosphor-react";
 import React from "react";
+import { Message_options } from "../../data";
 
 const DocMsg = ({ el }) => {
   const theme = useTheme();
@@ -18,7 +21,7 @@ const DocMsg = ({ el }) => {
         p={1.5}
         sx={{
           backgroundColor: el.incoming
-            ? theme.palette.background.default
+            ? theme.palette.background.paper
             : theme.palette.primary.main,
           borderRadius: 1.5,
           width: "max-content",
@@ -49,6 +52,7 @@ const DocMsg = ({ el }) => {
           </Typography>
         </Stack>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };
@@ -102,6 +106,7 @@ const LinkMsg = ({ el }) => {
           </Stack>
         </Stack>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };
@@ -114,7 +119,7 @@ const ReplyMsg = ({ el }) => {
         p={1.5}
         sx={{
           backgroundColor: el.incoming
-            ? theme.palette.background.default
+            ? theme.palette.background.paper
             : theme.palette.primary.main,
           borderRadius: 1.5,
           width: "max-content",
@@ -143,6 +148,7 @@ const ReplyMsg = ({ el }) => {
           </Typography>
         </Stack>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };
@@ -155,7 +161,7 @@ const MediaMsg = ({ el }) => {
         p={1.5}
         sx={{
           backgroundColor: el.incoming
-            ? theme.palette.background.default
+            ? theme.palette.background.paper
             : theme.palette.primary.main,
           borderRadius: 1.5,
           width: "max-content",
@@ -175,6 +181,7 @@ const MediaMsg = ({ el }) => {
           </Typography>
         </Stack>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };
@@ -187,7 +194,7 @@ const TextMsg = ({ el }) => {
         p={1.5}
         sx={{
           backgroundColor: el.incoming
-            ? theme.palette.background.default
+            ? theme.palette.background.paper
             : theme.palette.primary.main,
           borderRadius: 1.5,
           width: "max-content",
@@ -200,6 +207,7 @@ const TextMsg = ({ el }) => {
           {el.message}
         </Typography>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };
@@ -218,6 +226,44 @@ const Timeline = ({ el }) => {
       </Typography>
       <Divider sx={{ width: "46%" }} />
     </Stack>
+  );
+};
+
+const MessageOptions = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <>
+      <DotsThreeVertical
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        size={20}
+      />
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <Stack spacing={1}>
+          {Message_options.map((e) => (
+            <MenuItem onClick={handleClick}>{e.title}</MenuItem>
+          ))}
+        </Stack>
+      </Menu>
+    </>
   );
 };
 
