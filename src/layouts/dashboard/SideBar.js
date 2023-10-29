@@ -11,19 +11,50 @@ import {
 import React from "react";
 import { Nav_Buttons, Profile_Menu } from "../../data";
 import { useState } from "react";
+import { useNavigate} from "react-router-dom";
 import useSettings from "../../hooks/useSettings";
 import Logo from "../../assets/Images/logo.ico";
 import { Gear } from "phosphor-react";
 import { faker } from "@faker-js/faker";
 import AntSwitch from "../../components/AntSwitch";
 
+const getPath = (index) => {
+  switch (index) {
+    case 0:
+      return "/app";
+    case 1:
+      return "/group";
+    case 2:
+      return "/call";
+    case 3:
+      return "/settings";
+    default:
+      break;
+  }
+};
+
+const getMenuPath = (index) => {
+  switch (index) {
+    case 0:
+      return "/profile";
+    case 1:
+      return "/settings";
+    case 2:
+      return "/auth/login";
+    default:
+      break;
+  }
+};
+
 const SideBar = () => {
   // toggle mode
   const theme = useTheme();
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
   const { onToggleMode } = useSettings();
   //profile options
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -85,6 +116,7 @@ const SideBar = () => {
                   <IconButton
                     onClick={() => {
                       setSelected(el.index);
+                      navigate(getPath(el.index));
                     }}
                     sx={{
                       width: "max-content",
@@ -116,6 +148,7 @@ const SideBar = () => {
               <IconButton
                 onClick={() => {
                   setSelected(3);
+                  navigate(getPath(3));
                 }}
                 sx={{
                   width: "max-content",
@@ -158,14 +191,17 @@ const SideBar = () => {
               vertical: "bottom",
               horizontal: "right"
             }}
-            transformOrigin={{
-              vertical:"bottom",
-              horizontal: "left"
-            }}
+            // transformOrigin={{
+            //   vertical:"bottom",
+            //   horizontal: "left"
+            // }}
           >
             <Stack spacing={1}>
-              {Profile_Menu.map((e) => (
-                <MenuItem onClick={handleClick}>
+              {Profile_Menu.map((e, index) => (
+                <MenuItem onClick={()=>{
+                  handleClose();
+                  navigate(getMenuPath(index));
+                }}>
                   <Stack
                     sx={{ width: 100 }}
                     direction={"row"}
