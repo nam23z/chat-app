@@ -1,27 +1,15 @@
-import {
-  Box,
-  Divider,
-  IconButton,
-  Link,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Divider, IconButton, Link, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
-import {
-  Search,
-  SearchIconWrapper,
-  StyledInputBase,
-} from "../../components/Search";
-import { MagnifyingGlass, Plus } from "phosphor-react";
-
+import { Search, SearchIconWrapper, StyledInputBase } from "../../components/Search";
+import { MagnifyingGlass, Phone } from "phosphor-react";
 import { SimpleBarStyle } from "../../components/Scrollbar";
-import { ChatList } from "../../data";
-import ChatElement from "../../components/ChatElement";
-import CreateGroup from "../../sections/main/CreateGroup";
+import { CallLogElement } from "../../components/CallElement";
+import {CallLogs} from "../../data/index"
+import StartCall from "../../sections/main/StartCall";
 import { useState } from "react";
 
-const Group = () => {
+const Call = () => {
+
   const theme = useTheme();
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -47,7 +35,7 @@ const Group = () => {
         >
           <Stack p={3} spacing={2} sx={{ maxHeight: "100vh" }}>
             <Stack>
-              <Typography variant="h5">Group</Typography>
+              <Typography variant="h5">Call Logs</Typography>
             </Stack>
             <Stack sx={{ width: "100%" }}>
               <Search>
@@ -66,14 +54,14 @@ const Group = () => {
               justifyContent={"space-between"}
             >
               <Typography variant="subtitle2" component={Link}>
-                Create New Group
+                Start Conversation
               </Typography>
               <IconButton
                 onClick={() => {
                   setOpenDialog(!openDialog);
                 }}
               >
-                <Plus style={{ color: theme.palette.primary.main }} />
+                <Phone style={{ color: theme.palette.primary.main }} />
               </IconButton>
             </Stack>
             <Divider />
@@ -84,24 +72,13 @@ const Group = () => {
               <SimpleBarStyle timeout={500} clickOnTrack={false}>
                 <Stack spacing={2}>
                   {/*  */}
-                  <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+                  {/* <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                     Pinned
-                  </Typography>
-                  {/* Chat List */}
-                  {ChatList.filter((el) => el.pinned).map((el) => {
-                    return <ChatElement {...el} />;
-                  })}
-                </Stack>
-                <Stack spacing={2}>
-                  {/*  */}
-                  <Typography variant="subtitle2" sx={{ color: "#676767" }}>
-                    All Groups
-                  </Typography>
-                  {/* Chat List */}
-                  {ChatList.filter((el) => !el.pinned).map((el) => {
-                    return <ChatElement {...el} />;
-                  })}
-                </Stack>
+                  </Typography> */}
+                  {/* Call Logs */}
+                  {CallLogs.map((el)=> <CallLogElement {...el} /> )}
+                  
+                  </Stack>
               </SimpleBarStyle>
             </Stack>
           </Stack>
@@ -109,11 +86,10 @@ const Group = () => {
         {/* Right */}
         {/* // TODO => reuse Conversation components */}
       </Stack>
-      {openDialog && (
-        <CreateGroup open={openDialog} handleClose={handleCloseDialog} />
-      )}
+      {openDialog && <StartCall open={openDialog} handleClose={handleCloseDialog} />}
+      
     </>
   );
 };
 
-export default Group;
+export default Call;

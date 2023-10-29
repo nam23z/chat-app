@@ -61,7 +61,7 @@ const Chat = () => {
 
         <Stack
           direction={"column"}
-          sx={{ overflow: "scroll", overflowX: "visible" }}
+          sx={{ overflow: "auto" }}
         >
           <Stack spacing={2}>
             <Typography variant="subtitle2" sx={{ color: "#676767" }}>
