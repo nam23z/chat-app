@@ -11,12 +11,14 @@ import {
 import React from "react";
 import { Nav_Buttons, Profile_Menu } from "../../data";
 import { useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useSettings from "../../hooks/useSettings";
 import Logo from "../../assets/Images/logo.ico";
 import { Gear } from "phosphor-react";
 import { faker } from "@faker-js/faker";
 import AntSwitch from "../../components/AntSwitch";
+import { useDispatch } from "react-redux";
+import { LogoutUser } from "../../redux/slices/auth";
 
 const getPath = (index) => {
   switch (index) {
@@ -47,6 +49,7 @@ const getMenuPath = (index) => {
 };
 
 const SideBar = () => {
+  const dispatch = useDispatch();
   // toggle mode
   const theme = useTheme();
   const navigate = useNavigate();
@@ -189,7 +192,7 @@ const SideBar = () => {
             }}
             anchorOrigin={{
               vertical: "bottom",
-              horizontal: "right"
+              horizontal: "right",
             }}
             // transformOrigin={{
             //   vertical:"bottom",
@@ -198,11 +201,19 @@ const SideBar = () => {
           >
             <Stack spacing={1}>
               {Profile_Menu.map((e, index) => (
-                <MenuItem onClick={()=>{
-                  handleClose();
-                  navigate(getMenuPath(index));
-                }}>
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                  }}
+                >
                   <Stack
+                    onClick={() => {
+                      if (index === 2) {
+                        dispatch(LogoutUser());
+                      } else {
+                        navigate(getMenuPath(index));
+                      }
+                    }}
                     sx={{ width: 100 }}
                     direction={"row"}
                     alignItems={"center"}

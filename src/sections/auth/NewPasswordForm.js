@@ -1,5 +1,5 @@
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useSearchParams } from "react-router-dom";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -16,22 +16,29 @@ import {
 
 import { RHFTextField } from "../../components/hook-form/index";
 import { Eye, EyeSlash } from "phosphor-react";
+import { useDispatch } from "react-redux";
+import { NewPassword } from "../../redux/slices/auth";
 
 const NewPasswordForm = () => {
+
+  const dispatch = useDispatch();
+
+  const [queryParameters] = useSearchParams();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const NewPasswordSchema = Yup.object().shape({
-    newPassword: Yup.string()
+    password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("New Password is required"),
-    confirmPassword: Yup.string()
+    passwordConfirm: Yup.string()
       .required("New Password is required")
-      .oneOf([Yup.ref("newPassword"), null], "Password must match"),
+      .oneOf([Yup.ref("password"), null], "Password must match"),
   });
 
   const defaultValues = {
-    newPassword: "",
-    confirmPassword: "",
+    password: "",
+    passwordConfirm: "",
   };
 
   const methods = useForm({
@@ -49,6 +56,7 @@ const NewPasswordForm = () => {
   const onSubmit = async (data) => {
     try {
       //submit data to be
+      dispatch(NewPassword({...data, token: queryParameters.get("token")}));
     } catch (error) {
       console.log(error);
       reset();
@@ -66,7 +74,7 @@ const NewPasswordForm = () => {
           <Alert severity="error">{errors.afterSubmit.message}</Alert>
         )}
         <RHFTextField
-          name="newPassword"
+          name="password"
           label="New Password"
           type={showPassword ? "text" : "password"}
           InputProps={{
@@ -85,7 +93,7 @@ const NewPasswordForm = () => {
         />
         
         <RHFTextField
-          name="confirmPassword"
+          name="passwordConfirm"
           label="Confirm Password"
           type={showPassword ? "text" : "password"}
           InputProps={{
