@@ -55,4 +55,10 @@ export function LoginUser(formValues) {
         console.log(error);
       });
   };
+};
+
+export function LogoutUser(){
+  return async (dispatch, getState)=>{
+    dispatch(slice.actions.signOut())
+  }
 }
