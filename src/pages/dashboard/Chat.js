@@ -13,7 +13,7 @@ import {
   MagnifyingGlass,
   Users,
 } from "phosphor-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChatList } from "../../data/index";
 import {
   Search,
@@ -22,9 +22,22 @@ import {
 } from "../../components/Search";
 import ChatElement from "../../components/ChatElement";
 import Friends from "../../sections/main/Friends";
+import { socket } from "../../socket";
+import { useSelector } from "react-redux";
+
+const user_id = window.localStorage.getItem("user_id");
 
 const Chat = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const theme = useTheme();
+
+  const {conversations} = useSelector((state)=> state.conversation.direct_chat);
+
+  useEffect(()=>{
+    socket.emit("get_direct_conversations", {user_id}, (data)=>{
+      //data => List of conversations
+    })
+  }, []);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -33,7 +46,6 @@ const Chat = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-  const theme = useTheme();
   return (
     <>
       <Box
@@ -86,24 +98,23 @@ const Chat = () => {
 
           <Stack direction={"column"} sx={{ overflow: "auto" }}>
             <Stack spacing={2}>
-              <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+              {/* <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                 Pinned
               </Typography>
               {ChatList &&
                 ChatList.filter((el) => el.pinned).map((el) => {
                   return <ChatElement {...el} />;
-                })}
-            </Stack>
-
-            <Stack spacing={2}>
+                })} */}
+                {/* all chat */}
               <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                 All Chats
               </Typography>
-              {ChatList &&
-                ChatList.filter((el) => !el.pinned).map((el) => {
+              {conversations &&
+                conversations.filter((el) => !el.pinned).map((el) => {
                   return <ChatElement {...el} />;
                 })}
             </Stack>
+
           </Stack>
         </Stack>
       </Box>
