@@ -49,8 +49,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
+const user_id = window.localStorage.getItem("user_id");
+
 const UserComponent = ({ firstName, lastName, _id, online, img }) => {
-  const user_id = window.localStorage.getItem("user_id");
   const theme = useTheme();
 
   const name = `${firstName} ${lastName}`;
@@ -214,7 +215,7 @@ const FriendComponent = ({
           <IconButton
             onClick={() => {
               // start a new conversation
-            //   socket.emit("start_conversation", { to: _id, from: user_id });
+              socket.emit("start_conversation", { to: _id, from: user_id });
             }}
           >
             <Chat />
