@@ -116,8 +116,8 @@ export const FetchUsers = () => {
         console.log(response);
         dispatch(slice.actions.updateUsers({ users: response.data.data }));
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
   };
 };
@@ -144,7 +144,7 @@ export const FetchFriends = () => {
 export const FetchFriendRequests = () => {
   return async (dispatch, getState) => {
     await axios
-      .get("/user/get-friend-requests", {
+      .get("/user/get-requests", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getState().auth.token}`,
