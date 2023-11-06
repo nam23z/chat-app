@@ -1,15 +1,17 @@
 import React from "react";
 import Chat from "./Chat";
-import { Box, Stack, useTheme } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
 import Conversation from "../../components/Conversation";
 import Contact from "../../components/Contact";
 import { useSelector } from "react-redux";
 import SharedMessages from "../../components/SharedMessages";
 import StarredMessages from "../../components/StarredMessages";
 
+import NoChatSVG from "../../assets/Illustration/NoChat";
+
 const GeneralApp = () => {
   const theme = useTheme();
-  const { sidebar } = useSelector((store) => store.app);
+  const { sidebar, chat_type, room_id } = useSelector((store) => store.app);
 
   // console.log(app, "app");
   return (
@@ -28,9 +30,17 @@ const GeneralApp = () => {
         }}
       >
         {/* conversation */}
-        <Conversation />
-        {/* contact */}
+        {room_id !== null && chat_type === "individual" ? <Conversation /> : 
+          <Stack spacing={2} sx={{width: "100%", height: "100%"}} alignItems={"center"} justifyContent={"center"} >
+            <NoChatSVG/>
+            <Typography variant="subtitle2" >
+              Select a conversation or start new one
+            </Typography>
+          </Stack>
+        }
+        
       </Box>
+        {/* contact */}
       {sidebar.open &&
         (() => {
           switch (sidebar.type) {
