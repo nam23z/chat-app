@@ -14,6 +14,8 @@ const initialState = {
   users: [],
   friends: [],
   friendRequests: [],
+  chat_type: null,
+  room_id: null,
 };
 
 const slice = createSlice({
@@ -57,6 +59,10 @@ const slice = createSlice({
     updateFriendRequests(state, action) {
       state.friendRequests = action.payload.requests;
     },
+    selectConversation(state, action) {
+      state.chat_type = "individual";
+      state.room_id = action.payload.room_id;
+    },
   },
 });
 
@@ -99,48 +105,65 @@ export const closeSnackBar = () => async (dispatch, getState) => {
 
 export const FetchUsers = () => {
   return async (dispatch, getState) => {
-    await axios.get("/user/get-users", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getState().auth.token}`,
-      },
-    }).then((response)=>{
-      console.log(response);
-      dispatch(slice.actions.updateUsers({users: response.data.data}));
-    }).catch((error)=> {
-      console.log(error);
-    });
+    await axios
+      .get("/user/get-users", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(slice.actions.updateUsers({ users: response.data.data }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 };
 
 export const FetchFriends = () => {
   return async (dispatch, getState) => {
-    await axios.get("/user/get-friends", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getState().auth.token}`,
-      },
-    }).then((response)=>{
-      console.log(response);
-      dispatch(slice.actions.updateFriends({friends: response.data.data}));
-    }).catch((error)=> {
-      console.log(error);
-    });
+    await axios
+      .get("/user/get-friends", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(slice.actions.updateFriends({ friends: response.data.data }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 };
 
 export const FetchFriendRequests = () => {
   return async (dispatch, getState) => {
-    await axios.get("/user/get-friend-requests", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getState().auth.token}`,
-      },
-    }).then((response)=>{
-      console.log(response);
-      dispatch(slice.actions.updateFriendRequests({requests: response.data.data}));
-    }).catch((error)=> {
-      console.log(error);
-    });
+    await axios
+      .get("/user/get-friend-requests", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().auth.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(
+          slice.actions.updateFriendRequests({ requests: response.data.data })
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
+export const SelectConversation = ({ room_id }) => {
+  return (dispatch, getState) => {
+    dispatch(slice.actions.selectConversation({ room_id }));
   };
 };
