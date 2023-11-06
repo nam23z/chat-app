@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, Stack, Tab, Tabs } from "@mui/material";
+import { Dialog, DialogContent, Slide, Stack, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -9,6 +9,10 @@ import {
   FetchUsers,
 } from "../../redux/slices/app";
 import { FriendComponent, UserComponent } from "../../components/Friends";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -77,9 +81,12 @@ const Friends = ({ open, handleClose }) => {
       maxWidth="xs"
       open={open}
       keepMounted
+      TransitionComponent={Transition}
       onClose={handleClose}
+      aria-describedby="alert-dialog-slide-description"
       sx={{ p: 4 }}
     >
+      {/* <DialogTitle>{"Friends"}</DialogTitle> */}
       <Stack p={2} sx={{ width: "100%" }}>
         <Tabs value={value} onChange={handleChange} centered>
           <Tab label="Explore" />
