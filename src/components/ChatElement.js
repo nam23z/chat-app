@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Avatar, Badge, Box, Stack, Typography, useTheme } from "@mui/material";
 import StyledBadge from "./StyledBadge";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SelectConversation } from "../redux/slices/app";
 
 const ChatElement = ({ id, name, img, msg, time, unread, online }) => {
@@ -9,10 +9,18 @@ const ChatElement = ({ id, name, img, msg, time, unread, online }) => {
 
   const dispatch = useDispatch();
 
+  const { room_id } = useSelector((state) => state.app);
+  
+  const selectedChatId = room_id?.toString();
+  let isSelected = +selectedChatId === id;
+  if (!selectedChatId) {
+    isSelected = false;
+  }
+
   return (
     <Box
       onClick={() => {
-        dispatch(SelectConversation({room_id: id}))
+        dispatch(SelectConversation({ room_id: id }));
       }}
       p={2}
       sx={{

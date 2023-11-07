@@ -23,22 +23,28 @@ import {
 import ChatElement from "../../components/ChatElement";
 import Friends from "../../sections/main/Friends";
 import { socket } from "../../socket";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { FetchDirectConversations } from "../../redux/slices/conversation";
 
 const user_id = window.localStorage.getItem("user_id");
 
 const Chat = () => {
-  const [openDialog, setOpenDialog] = useState(false);
   const theme = useTheme();
+  const dispatch = useDispatch();
 
-  const {conversations} = useSelector((state)=> state.conversation.direct_chat);
+  const { conversations } = useSelector(
+    (state) => state.conversation.direct_chat
+  );
 
-  useEffect(()=>{
-    socket.emit("get_direct_conversations", {user_id}, (data)=>{
+  useEffect(() => {
+    socket.emit("get_direct_conversations", { user_id }, (data) => {
       //data => List of conversations
-    })
+      // console.log(data);
+      dispatch(FetchDirectConversations({ conversations: data }));
+    });
   }, []);
 
+  const [openDialog, setOpenDialog] = useState(false);
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -105,16 +111,17 @@ const Chat = () => {
                 ChatList.filter((el) => el.pinned).map((el) => {
                   return <ChatElement {...el} />;
                 })} */}
-                {/* all chat */}
+              {/* all chat */}
               <Typography variant="subtitle2" sx={{ color: "#676767" }}>
                 All Chats
               </Typography>
               {conversations &&
-                conversations.filter((el) => !el.pinned).map((el) => {
-                  return <ChatElement {...el} />;
-                })}
+                conversations
+                  .filter((el) => !el.pinned)
+                  .map((el) => {
+                    return <ChatElement {...el} />;
+                  })}
             </Stack>
-
           </Stack>
         </Stack>
       </Box>

@@ -63,6 +63,9 @@ const slice = createSlice({
       state.chat_type = "individual";
       state.room_id = action.payload.room_id;
     },
+    toggleSideBar(state) {
+      state.sidebar.open = !state.sidebar.open;
+    },
   },
 });
 
@@ -167,3 +170,9 @@ export const SelectConversation = ({ room_id }) => {
     dispatch(slice.actions.selectConversation({ room_id }));
   };
 };
+
+export const TogleSidebar = () => {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.toggleSideBar());
+  };
+}
