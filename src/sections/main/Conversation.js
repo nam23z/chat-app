@@ -7,12 +7,13 @@ import {
   MenuItem,
   IconButton,
   Divider,
+  Avatar,
 } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
 import { DotsThreeVertical, DownloadSimple, Image } from "phosphor-react";
 import { Message_options } from "../../data";
 import { Link } from "react-router-dom";
-import Embed from "react-embed";
+import { faker } from "@faker-js/faker";
 
 const MessageOption = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -182,11 +183,7 @@ const LinkMsg = ({ el, menu }) => {
             }}
           >
             <Stack direction={"column"} spacing={2}>
-              <Embed
-                width="300px"
-                isDark
-                url={`https://youtu.be/xoWxBR34qLE`}
-              />
+            <Avatar src={faker.image.avatar()} alt={faker.name.fullName()}/>
             </Stack>
           </Stack>
           <Typography
