@@ -25,6 +25,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useSelector } from "react-redux";
 import { socket } from "../../socket";
+import { useNavigate } from "react-router-dom";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-input": {
@@ -156,9 +157,15 @@ function containsUrl(text) {
   return urlRegex.test(text);
 }
 
-const Footer = () => {
+const Footer = ({onRefresh}) => {
+
+  const navigate = useNavigate();
 
   const theme = useTheme();
+
+  const uOnRefresh = () => {
+    navigate("http://localhost:3000/app");
+  }
 
   const { current_conversation } = useSelector(
     (state) => state.conversation.direct_chat
@@ -260,6 +267,8 @@ const Footer = () => {
                     to: current_conversation.user_id,
                     type: containsUrl(value) ? "Link" : "Text",
                   });
+                  setValue("");
+                  // uOnRefresh();
                 }}
               >
                 <PaperPlaneTilt color="#ffffff" />

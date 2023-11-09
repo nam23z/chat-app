@@ -5,7 +5,6 @@ import { SimpleBarStyle } from "../../components/Scrollbar";
 
 import { ChatHeader, ChatFooter } from "../../components/Chat";
 import useResponsive from "../../hooks/useResponsive";
-import { Chat_History } from "../../data";
 import {
   DocMsg,
   LinkMsg,
@@ -20,9 +19,9 @@ import {
   SetCurrentConversation,
 } from "../../redux/slices/conversation";
 import { socket } from "../../socket";
-import { useState } from "react";
 
 const Conversation = ({ isMobile, menu }) => {
+
   const dispatch = useDispatch();
 
   const { conversations, current_messages } = useSelector(
@@ -40,7 +39,7 @@ const Conversation = ({ isMobile, menu }) => {
     });
 
     dispatch(SetCurrentConversation(current));
-  }, []);
+  });
   return (
     <Box p={isMobile ? 1 : 3}>
       <Stack spacing={3}>
