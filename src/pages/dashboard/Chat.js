@@ -14,7 +14,6 @@ import {
   Users,
 } from "phosphor-react";
 import React, { useEffect, useState } from "react";
-import { ChatList } from "../../data/index";
 import {
   Search,
   SearchIconWrapper,
