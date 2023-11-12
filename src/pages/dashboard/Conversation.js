@@ -29,17 +29,17 @@ const Conversation = ({ isMobile, menu }) => {
   );
   const { room_id } = useSelector((state) => state.app);
 
+  // const updateChat = useCallback(() => {
+  // },[current_messages]);
+  const current = conversations.find((el) => el?.id === room_id);
+  
   useEffect(() => {
-    const current = conversations.find((el) => el?.id === room_id);
-
     socket.emit("get_messages", { conversation_id: current?.id }, (data) => {
       // data => list of messages
-      // console.log(data, "List of messages");
       dispatch(FetchCurrentMessages({ messages: data }));
     });
-
-    dispatch(SetCurrentConversation(current));
-  });
+    // dispatch(SetCurrentConversation(current));
+  },[current_messages]);
   return (
     <Box p={isMobile ? 1 : 3}>
       <Stack spacing={3}>
@@ -103,8 +103,10 @@ const ChatComponent = () => {
     (state) => state.conversation.direct_chat
   );
 
+
   useEffect(() => {
     // Scroll to the bottom of the message list when new messages are added
+    //
     messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
   }, [current_messages]);
 
